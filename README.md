@@ -7,7 +7,7 @@
 
 health-monitoring-tool-streamlit
 ### Quick Setup
-The project uses [Pip]([https://pypi.org/project/pip/] to keep track of its dependencies. To setup follow instructions below:
+The project uses [Pip](https://pypi.org/project/pip/) to keep track of its dependencies. To setup follow instructions below:
 
 ```bash
 git clone git@github.com:nathanbaleeta/health-monitoring-tool-streamlit.git
