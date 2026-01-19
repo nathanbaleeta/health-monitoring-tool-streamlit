@@ -20,3 +20,9 @@ source venv/bin/activate
 
 pip install streamlit requests pandas
 ```
+
+### Launch app
+To bootstrap the app 
+```
+streamlit run app.py
+```
