@@ -18,7 +18,7 @@ python3 -m venv venv
 
 source venv/bin/activate
 
-pip install streamlit requests pandas
+pip install streamlit requests pandas streamlit-dynamic-filters
 ```
 
 ### Launch app
