@@ -1,6 +1,16 @@
 import streamlit as st
 import requests
 import pandas as pd
+from streamlit_dynamic_filters import DynamicFilters
+
+
+# Streamlit app layout
+st.title("Health Monitoring Tool")
+st.write("A public health monitoring platform tool that collects and visualizes data related to community health.")
+
+st.subheader("Data from API.")
+
+API_ENDPOINT = "https://disease.sh/v3/covid-19/countries"
 
 # Function to fetch data from the API
 @st.cache_data # Cache the data to prevent re-fetching on every rerun
@@ -15,12 +25,7 @@ def get_health_stats_data(url):
         st.error(f"Error fetching data: {e}")
         return None
 
-# Streamlit app layout
-st.title("Health Monitoring Tool")
-st.write("A public health monitoring platform tool that collects and visualizes data related to community health.")
 
-
-API_ENDPOINT = "https://disease.sh/v3/covid-19/countries"
 
 # Fetch data
 api_data = get_health_stats_data(API_ENDPOINT)
@@ -32,20 +37,17 @@ if api_data is not None:
     # Drop unnecessary columns
     df.drop('countryInfo', inplace=True, axis=1)
 
-    # Create a selectbox with unique categories
-    country_selection = st.selectbox(
-        'Select Country',
-        options=df['country'].unique()
-    )
+    # Initialize dynamic filters
+    dynamic_filters = DynamicFilters(df, filters=['continent', 'country'])
 
-    # Filter the data based on the selection
-    filtered_df = df[df['country'] == country_selection]
+    # Display filters and the filtered dataframe
+    dynamic_filters.display_filters()
+    dynamic_filters.display_df()
 
-    st.subheader("Data from API.")
-    st.write(f"Fetched {len(filtered_df)} records.")
+    
 
-    # Display the DataFrame in an interactive table
-    st.dataframe(filtered_df) # Use st.dataframe for an interactive table
+
+    
 
 else:
     st.warning("Could not load data from the API.")
