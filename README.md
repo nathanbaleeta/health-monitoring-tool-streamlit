@@ -3,9 +3,9 @@
 
 ### Pre-requisites
 - Python 3.xx+
-- Streamlit
+- [Streamlit](https://streamlit.io/)
 
-health-monitoring-tool-streamlit
+
 ### Quick Setup
 The project uses [Pip](https://pypi.org/project/pip/) to keep track of its dependencies. To setup follow instructions below:
 
