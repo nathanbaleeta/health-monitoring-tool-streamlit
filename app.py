@@ -1,9 +1,14 @@
 
 import streamlit as st
+import altair as alt
 import pandas as pd
 import numpy as np
 import requests
 from streamlit_dynamic_filters import DynamicFilters
+
+
+source = pd.DataFrame({"category": [1, 2, 3, 4, 5, 6], "value": [4, 6, 10, 3, 7, 8]})
+
 
 st.set_page_config(
     # Title and icon for the browser's tab bar:
@@ -46,10 +51,10 @@ if api_data is not None:
 
     # Display filters in sidebar and the filtered dataframe in main pane
     # dynamic_filters.display_filters(location='sidebar')
-    dynamic_filters.display_filters(location='columns', num_columns=2, gap='large')
+    dynamic_filters.display_filters(location='columns', num_columns=2, gap='medium')
     
     st.subheader(f"KPI Metrics Summary")
-    
+
     # Get filtered dataframe
     filtered_df = dynamic_filters.filter_df()
 
@@ -59,7 +64,7 @@ if api_data is not None:
     total_recovered = filtered_df['recovered'].sum()
     total_active = filtered_df['active'].sum()
     total_tests = filtered_df['tests'].sum()
-    count = len(filtered_df)
+    total_population = filtered_df['population'].sum()
 
     # Display metrics using Streamlit columns for layout
     col1, col2, col3, col4, col5, col6 = st.columns(6)
@@ -75,7 +80,30 @@ if api_data is not None:
     with col5:
         st.metric("Tests", f"{total_tests:,}")
     with col6:
-        st.metric("Number of Records", count)
+        st.metric("Population", total_population)
+
+    # Display charts
+    with st.container(horizontal=True, gap="medium"):
+        # Create two columns with equal width
+        cols = st.columns(2, gap="medium")
+
+        # Place a chart in the first column
+        with cols[0]:
+            st.write("### Cases by Continent")
+            #st.bar_chart(filtered_df, x="continent", y="cases")
+            
+            # 3. Display the chart in the Streamlit app
+            chart = alt.Chart(filtered_df).mark_arc(innerRadius=100).encode(
+                theta=alt.Theta(field="cases", type="quantitative"),
+                color=alt.Color(field="continent", type="nominal"),
+                tooltip=['continent', 'cases']
+            )
+            st.altair_chart(chart, width='stretch')
+
+        # Place a chart in the second column
+        with cols[1]:
+            st.write("### Cases by Country")
+            st.bar_chart(filtered_df, x="country", y="cases")
 
     # Optionally, display the filtered DataFrame
     st.subheader("Filtered Data")
