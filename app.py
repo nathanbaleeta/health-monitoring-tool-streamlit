@@ -6,10 +6,6 @@ import numpy as np
 import requests
 from streamlit_dynamic_filters import DynamicFilters
 
-
-#source = pd.DataFrame({"category": [1, 2, 3, 4, 5, 6], "value": [4, 6, 10, 3, 7, 8]})
-
-
 st.set_page_config(
     # Title and icon for the browser's tab bar:
     page_title="Health Monitoring Tool",
