@@ -7,7 +7,7 @@ import requests
 from streamlit_dynamic_filters import DynamicFilters
 
 
-source = pd.DataFrame({"category": [1, 2, 3, 4, 5, 6], "value": [4, 6, 10, 3, 7, 8]})
+#source = pd.DataFrame({"category": [1, 2, 3, 4, 5, 6], "value": [4, 6, 10, 3, 7, 8]})
 
 
 st.set_page_config(
@@ -50,8 +50,8 @@ if api_data is not None:
     dynamic_filters = DynamicFilters(df, filters=['continent', 'country'])
 
     # Display filters in sidebar and the filtered dataframe in main pane
-    # dynamic_filters.display_filters(location='sidebar')
-    dynamic_filters.display_filters(location='columns', num_columns=2, gap='medium')
+    # dynamic_filters.display_filters(location='sidebar') #columns
+    dynamic_filters.display_filters(location='sidebar', num_columns=2, gap='medium')
     
     st.subheader(f"KPI Metrics Summary")
 
@@ -80,7 +80,7 @@ if api_data is not None:
     with col5:
         st.metric("Tests", f"{total_tests:,}")
     with col6:
-        st.metric("Population", total_population)
+        st.metric("Population", f"{total_population:,}")
 
     # Display charts
     with st.container(horizontal=True, gap="medium"):
@@ -90,20 +90,56 @@ if api_data is not None:
         # Place a chart in the first column
         with cols[0]:
             st.write("### Cases by Continent")
-            #st.bar_chart(filtered_df, x="continent", y="cases")
-            
-            # 3. Display the chart in the Streamlit app
-            chart = alt.Chart(filtered_df).mark_arc(innerRadius=100).encode(
-                theta=alt.Theta(field="cases", type="quantitative"),
-                color=alt.Color(field="continent", type="nominal"),
-                tooltip=['continent', 'cases']
-            )
-            st.altair_chart(chart, width='stretch')
+            st.bar_chart(filtered_df, x="continent", y="cases")
 
         # Place a chart in the second column
         with cols[1]:
             st.write("### Cases by Country")
-            st.bar_chart(filtered_df, x="country", y="cases")
+            st.bar_chart(filtered_df, x="country", y="cases", color="blue")
+
+    with st.container(horizontal=True, gap="medium"):
+        cols = st.columns(2, gap="medium")
+
+        with cols[0]:
+            st.write("### Deaths by Continent")
+            st.bar_chart(filtered_df, x="continent", y="deaths", color="blue")
+
+        with cols[1]:
+            st.write("### Deaths by Country")
+            st.bar_chart(filtered_df, x="country", y="deaths", color="blue")
+
+    with st.container(horizontal=True, gap="medium"):
+        cols = st.columns(2, gap="medium")
+
+        with cols[0]:
+            st.write("### Recovered by Continent")
+            st.bar_chart(filtered_df, x="continent", y="recovered", color="blue")
+
+        with cols[1]:
+            st.write("### Recovered by Country")
+            st.bar_chart(filtered_df, x="country", y="recovered", color="blue")
+
+    with st.container(horizontal=True, gap="medium"):
+        cols = st.columns(2, gap="medium")
+
+        with cols[0]:
+            st.write("### Active by Continent")
+            st.bar_chart(filtered_df, x="continent", y="active", color="blue")
+
+        with cols[1]:
+            st.write("### Active by Country")
+            st.bar_chart(filtered_df, x="country", y="active", color="blue")
+
+    with st.container(horizontal=True, gap="medium"):
+        cols = st.columns(2, gap="medium")
+
+        with cols[0]:
+            st.write("### Tests by Continent")
+            st.bar_chart(filtered_df, x="continent", y="tests", color="blue")
+
+        with cols[1]:
+            st.write("### Tests by Country")
+            st.bar_chart(filtered_df, x="country", y="tests", color="blue")
 
     # Optionally, display the filtered DataFrame
     st.subheader("Filtered Data")
