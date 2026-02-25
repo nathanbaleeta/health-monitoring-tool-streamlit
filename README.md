@@ -4,6 +4,7 @@
 ### Pre-requisites
 - Python 3.xx+
 - [Streamlit](https://streamlit.io/)
+- Pandas
 
 
 ### Quick Setup
@@ -18,7 +19,7 @@ python3 -m venv venv
 
 source venv/bin/activate
 
-pip install streamlit requests pandas streamlit-dynamic-filters
+pip install -r requirements.txt
 ```
 
 ### Launch app
